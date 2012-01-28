@@ -9,7 +9,7 @@
       <email>ryao@cs.stonybrook.edu</email>
       <name>Richard Yao</name>
     </owner>
-    <source type="git">git://github.com/pendor/gentoo-zfs-overlay.git</source>
+    <source type="git">git://github.com/gentoofan/zfs-overlay.git</source>
     <feed>https://github.com/gentoofan/zfs-overlay/commits/master.atom</feed>
   </repo>
 </repositories>

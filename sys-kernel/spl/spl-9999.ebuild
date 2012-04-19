@@ -9,7 +9,7 @@ inherit flag-o-matic git-2 linux-mod autotools-utils
 DESCRIPTION="The Solaris Porting Layer is a Linux kernel module which provides many of the Solaris kernel APIs"
 HOMEPAGE="http://zfsonlinux.org/"
 SRC_URI=""
-EGIT_REPO_URI="git://github.com/gentoofan/spl.git"
+EGIT_REPO_URI="git://github.com/ryao/spl.git"
 EGIT_BRANCH="gentoo"
 
 LICENSE="|| ( GPL-2 GPL-3 )"

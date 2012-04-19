@@ -4,12 +4,12 @@
   <repo quality="experimental" status="unofficial">
     <name>zfs</name>
     <description>Overlay for Gentoo ZFS Development</description>
-    <homepage>https://github.com/gentoofan/zfs-overlay</homepage>
+    <homepage>https://github.com/ryao/zfs-overlay</homepage>
     <owner type="project">
       <email>ryao@cs.stonybrook.edu</email>
       <name>Richard Yao</name>
     </owner>
-    <source type="git">git://github.com/gentoofan/zfs-overlay.git</source>
-    <feed>https://github.com/gentoofan/zfs-overlay/commits/master.atom</feed>
+    <source type="git">git://github.com/ryao/zfs-overlay.git</source>
+    <feed>https://github.com/ryao/zfs-overlay/commits/master.atom</feed>
   </repo>
 </repositories>

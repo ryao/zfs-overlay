@@ -37,7 +37,7 @@ COMMON_URI="${DM_HOME}/dmraid-${VERSION_DMRAID}.tar.bz2
 
 if [[ ${PV} == 9999* ]]
 then
-	EGIT_REPO_URI="git://github.com/gentoofan/genkernel-zfs.git"
+	EGIT_REPO_URI="git://github.com/ryao/genkernel-zfs.git"
 	inherit git-2 bash-completion eutils
 	S="${WORKDIR}/${PN}"
 	SRC_URI="${COMMON_URI}"

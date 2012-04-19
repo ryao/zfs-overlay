@@ -100,7 +100,7 @@ src_install() {
 	doexe "${FILESDIR}/linuxrc"
 
 	[ -e /etc/runlevels/boot/zfs ] \
-		|| ewarn 'You should add zfs to the boot runlevel.' 
+		|| ewarn 'You should add zfs to the boot runlevel.'
 
 	[ -e /etc/runlevels/shutdown/zfs-shutdown ] \
 		|| ewarn 'You should add zfs-shutdown to the shutdown runlevel.'

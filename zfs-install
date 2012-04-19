@@ -1,0 +1,132 @@
+#
+# Boot install CD (i.e. Gentoo 12.1 LiveDVD)
+#
+
+# Create pool
+zpool create -o ashift=12 -o cachefile= -O normalization=formD -O canmount=noauto -R /mnt/gentoo rpool /dev/sda
+
+# Create rootfs
+zfs create -o mountpoint=none rpool/ROOT
+zfs create -o mountpoint=/ rpool/ROOT/gentoo
+
+# Create home directories
+zfs create -o mountpoint=/home rpool/HOME
+zfs create -o mountpoint=/root rpool/HOME/root
+
+# Create portage directories
+zfs create -o mountpoint=none rpool/GENTOO
+zfs create -o mountpoint=/usr/portage rpool/GENTOO/portage
+zfs create -o mountpoint=/usr/portage/distfiles rpool/GENTOO/distfiles
+
+# Create optional packages directory
+zfs create -o mountpoint=/usr/portage/packages rpool/GENTOO/packages
+
+# Create optional ccache directory
+zfs create -o mountpoint=/var/tmp/ccache -o compression=gzip-9 rpool/GENTOO/ccache
+
+#
+# Download stage3 from http://distfiles.gentoo.org/releases/amd64/current-stage3/ into /mnt/gentoo
+#
+
+# Extract stage3
+tar -xf /mnt/gentoo/stage3-*.tar.bz2 -C /mnt/gentoo
+
+# Copy zpool.cache into chroot
+mkdir -p /mnt/gentoo/etc/zfs
+cp /etc/zfs/zpool.cache /mnt/gentoo/etc/zfs/zpool.cache
+
+# Copy resolv.conf into chroot
+cp /etc/resolv.conf /mnt/gentoo/etc/resolv.conf
+
+# Mount filesystems
+mount -t proc none /mnt/gentoo/proc
+mount --rbind /dev /mnt/gentoo/dev
+mount --rbind /sys /mnt/gentoo/sys
+
+# chroot
+chroot /mnt/gentoo /bin/bash
+env-update; source /etc/profile; export PS1="(chroot) $PS1"; cd
+
+# Get portage snapshot
+emerge --sync
+
+# Update OpenRC to satisfy genkernel dependency
+echo "=sys-apps/openrc-0.9.9.3 **" >> /etc/portage/package.accept_keywords
+emerge --oneshot sys-apps/openrc
+
+# Install genkernel
+echo "=sys-kernel/genkernel-3.4.30 **" >> /etc/portage/package.accept_keywords
+emerge sys-kernel/genkernel
+
+# Build initial kernel (required for checks in sys-kernel/spl and sys-fs/zfs)
+genkernel all --no-clean --no-mountboot
+
+# Install ZFS
+echo "=sys-kernel/spl-9999 **" >> /etc/portage/package.accept_keywords
+echo "=sys-fs/zfs-9999 **" >> /etc/portage/package.accept_keywords
+emerge sys-fs/zfs
+
+# Add ZFS to boot runlevel
+rc-update add zfs boot
+
+# Install gptdisk
+emerge sys-apps/gptfdisk
+
+#
+# Use gdisk to make partition 2 a BIOS boot partition (type EF02) from sectors 48 to 2047
+#
+
+# Install GRUB2
+echo "=sys-boot/os-prober-1.47 ~amd64" >> /etc/portage/package.accept_keywords
+echo "=sys-boot/grub-9999 **" >> /etc/portage/package.accept_keywords
+echo "sys-boot/grub libzfs" >> /etc/portage/package.use
+env FEATURES=-sandbox emerge sys-boot/grub:2
+grub2-install /dev/sda
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
+# Install module-rebuild
+emerge module-rebuild
+
+# Build kernel and initramfs
+genkernel all --no-clean --no-mountboot --zfs --bootloader=grub2 --callback="module-rebuild rebuild"
+
+#
+# Comment the BOOT, ROOT and SWAP lines in /etc/fstab
+#
+
+#
+# Follow chapters 8 through 12 of Gentoo Handboook: http://www.gentoo.org/doc/en/handbook/
+#
+
+# Make recovery snapshot after booting into new install
+zfs snapshot rpool/ROOT/gentoo@install
+
+# Additional tips
+
+#ARC tuning - You can configure the RAM that ARC uses (untested with genkernel)
+echo options zfs zfs_arc_max=512M > /etc/modprobe.d/zfs.conf
+
+#Set portage niceness to minimize potential for updates to cause lag
+echo PORTAGE_NICENESS=19 >> /etc/make.conf
+
+#Set portage to compile in a CGROUP to minimize lag
+cat << END > /usr/local/sbin/portage-cgroup
+#!/bin/sh
+# $1 must be the portage PID
+
+cgroup=$(mktemp -d --tmpdir=/sys/fs/cgroup/cpu portage-XXXX) &&
+echo $1 > "${cgroup}/tasks" &&
+echo 1 > "${cgroup}/notify_on_release"
+echo 256 > "${cgroup}/cpu.shares"
+END
+chmod u+x /usr/local/sbin/portage-cgroup
+echo 'PORTAGE_IONICE_COMMAND="/usr/local/sbin/portage-cgroup \${PID}"' >> /etc/make.conf
+
+# Experimental swap support (requires patches)
+zfs create -o primarycache=metadata -o secondarycache=none -V 8G rpool/swap
+mkswap -f /dev/zvol/rpool/swap
+# Edit fstab to use swap here
+
+#
+# Note: Integrate `zfs create -o mountpoint=/home/user rpool/HOME/user` into procedure
+#

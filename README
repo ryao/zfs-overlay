@@ -1,6 +1,6 @@
 To add this overlay to a Gentoo system, run the following command:
 
-layman -o https://raw.github.com/gentoofan/zfs-overlay/master/overlay.xml -f -a zfs
+layman -o https://raw.github.com/ryao/zfs-overlay/master/overlay.xml -f -a zfs
 
 Note that you must have both dev-vcs/git and app-portage/layman installed on
 your system for this to work.

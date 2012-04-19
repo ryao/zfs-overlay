@@ -99,6 +99,10 @@ src_install() {
 	exeinto /usr/share/zfs
 	doexe "${FILESDIR}/linuxrc"
 
+}
+
+pkg_postinst() {
+
 	[ -e /etc/runlevels/boot/zfs ] \
 		|| ewarn 'You should add zfs to the boot runlevel.'
 

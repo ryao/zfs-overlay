@@ -79,7 +79,8 @@ emerge sys-apps/gptfdisk
 
 #
 # Use gdisk to make partition 2 a BIOS boot partition (type EF02) from sectors 48 to 2047
-# Then restart
+# Then restart and re-enter the chroot to force the kernel to reload the partition tables.
+# Otherwise, GRUB2 installation might fail.
 #
 
 # Install GRUB2

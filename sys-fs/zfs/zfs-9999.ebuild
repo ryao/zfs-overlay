@@ -13,8 +13,7 @@ inherit flag-o-matic git-2 linux-mod toolchain-funcs autotools-utils
 DESCRIPTION="Native ZFS for Linux"
 HOMEPAGE="http://zfsonlinux.org/"
 SRC_URI=""
-EGIT_REPO_URI="git://github.com/ryao/zfs.git"
-EGIT_BRANCH="gentoo"
+EGIT_REPO_URI="git://github.com/zfsonlinux/zfs.git"
 
 LICENSE="CDDL GPL-2"
 SLOT="0"
@@ -45,6 +44,8 @@ DEPEND+="
 
 pkg_setup() {
 	CONFIG_CHECK="!DEBUG_LOCK_ALLOC
+		!PREEMPT
+		!PREEMPT_VOLUNTARY
 		BLK_DEV_LOOP
 		EFI_PARTITION
 		MODULES

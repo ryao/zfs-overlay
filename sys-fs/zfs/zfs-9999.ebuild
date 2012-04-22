@@ -4,6 +4,10 @@
 
 EAPI="4"
 
+AT_M4DIR="config"
+AUTOTOOLS_AUTORECONF="1"
+AUTOTOOLS_IN_SOURCE_BUILD="1"
+
 inherit flag-o-matic git-2 linux-mod toolchain-funcs autotools-utils
 
 DESCRIPTION="Native ZFS for Linux"
@@ -38,10 +42,6 @@ RDEPEND="${DEPEND}
 DEPEND+="
 	test? ( sys-fs/mdadm )
 "
-
-AT_M4DIR="config"
-AUTOTOOLS_AUTORECONF="1"
-AUTOTOOLS_IN_SOURCE_BUILD="1"
 
 pkg_setup() {
 	CONFIG_CHECK="!DEBUG_LOCK_ALLOC

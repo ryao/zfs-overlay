@@ -56,10 +56,15 @@ emerge --oneshot sys-apps/openrc
 
 # Install genkernel
 echo "=sys-kernel/genkernel-3.4.30 **" >> /etc/portage/package.accept_keywords
+echo "sys-kernel/genkernel -crypt" >> /etc/portage/package.use
 emerge sys-kernel/genkernel
 
+# Install sources
+emerge sys-kernel/gentoo-sources
+
 # Build initial kernel (required for checks in sys-kernel/spl and sys-fs/zfs)
-genkernel all --no-clean --no-mountboot
+# FIXME: Make genkernel support modules_prepare
+genkernel kernel --no-clean --no-mountboot
 
 # Install ZFS
 echo "=sys-kernel/spl-9999 **" >> /etc/portage/package.accept_keywords
@@ -74,13 +79,15 @@ emerge sys-apps/gptfdisk
 
 #
 # Use gdisk to make partition 2 a BIOS boot partition (type EF02) from sectors 48 to 2047
+# Then restart
 #
 
 # Install GRUB2
 echo "=sys-boot/os-prober-1.47 ~amd64" >> /etc/portage/package.accept_keywords
-echo "=sys-boot/grub-9999 **" >> /etc/portage/package.accept_keywords
+echo "<sys-boot/grub-9999 **" >> /etc/portage/package.accept_keywords
 echo "sys-boot/grub libzfs" >> /etc/portage/package.use
 env FEATURES=-sandbox emerge sys-boot/grub:2
+touch /etc/mtab
 grub2-install /dev/sda
 grub2-mkconfig -o /boot/grub2/grub.cfg
 

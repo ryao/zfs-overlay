@@ -71,8 +71,11 @@ echo "=sys-kernel/spl-9999 **" >> /etc/portage/package.accept_keywords
 echo "=sys-fs/zfs-9999 **" >> /etc/portage/package.accept_keywords
 emerge sys-fs/zfs
 
-# Add ZFS to boot runlevel
+# Add zfs to boot runlevel
 rc-update add zfs boot
+
+# Add zfs-shutdown to shutdown runlevel
+rc-update add zfs-shutdown shutdown
 
 # Install gptdisk
 emerge sys-apps/gptfdisk

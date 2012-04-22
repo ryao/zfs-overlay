@@ -56,7 +56,6 @@ pkg_setup() {
 		ZLIB_INFLATE"
 	kernel_is ge 2 6 26 || die "Linux 2.6.26 or newer required"
 	check_extra_config
-	use x86 && ewarn "32-bit kernels are unsupported by ZFSOnLinux upstream. Do not file bug reports."
 }
 
 src_prepare() {
@@ -108,6 +107,8 @@ src_install() {
 }
 
 pkg_postinst() {
+
+	use x86 && ewarn "32-bit kernels are unsupported by ZFSOnLinux upstream. Do not file bug reports."
 
 	[ -e /etc/runlevels/boot/zfs ] \
 		|| ewarn 'You should add zfs to the boot runlevel.'

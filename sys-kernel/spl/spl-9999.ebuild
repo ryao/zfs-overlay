@@ -4,6 +4,10 @@
 
 EAPI="4"
 
+AT_M4DIR="config"
+AUTOTOOLS_AUTORECONF="1"
+AUTOTOOLS_IN_SOURCE_BUILD="1"
+
 inherit flag-o-matic git-2 linux-mod autotools-utils
 
 DESCRIPTION="The Solaris Porting Layer is a Linux kernel module which provides many of the Solaris kernel APIs"
@@ -18,10 +22,6 @@ KEYWORDS=""
 IUSE="custom-cflags debug"
 
 RDEPEND="!sys-devel/spl"
-
-AT_M4DIR="config"
-AUTOTOOLS_AUTORECONF="1"
-AUTOTOOLS_IN_SOURCE_BUILD="1"
 
 pkg_setup() {
 	CONFIG_CHECK="

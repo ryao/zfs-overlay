@@ -24,7 +24,7 @@ IUSE="custom-cflags debug dracut test test-suite static-libs"
 DEPEND="
 	>=sys-kernel/spl-${PV}
 	sys-apps/util-linux[static-libs?]
-	sys-libs/zlib[static-libs?]
+	sys-libs/zlib[static-libs(+)?]
 "
 RDEPEND="${DEPEND}
 	!sys-fs/zfs-fuse

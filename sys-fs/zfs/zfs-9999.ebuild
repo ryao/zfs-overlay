@@ -19,7 +19,7 @@ EGIT_BRANCH="gentoo"
 LICENSE="CDDL GPL-2"
 SLOT="0"
 KEYWORDS=""
-IUSE="custom-cflags debug dracut test test-suite static-libs"
+IUSE="custom-cflags debug dracut +rootfs test test-suite static-libs"
 
 DEPEND="
 	>=sys-kernel/spl-${PV}
@@ -37,6 +37,10 @@ RDEPEND="${DEPEND}
 		sys-fs/mdadm
 		sys-process/procps
 		virtual/modutils
+		)
+	rootfs? (
+		app-arch/cpio
+		app-misc/pax-utils
 		)
 "
 DEPEND+="
@@ -94,10 +98,12 @@ src_install() {
 	use dracut || rm -rf "${ED}usr/share/dracut"
 	use test-suite || rm -rf "${ED}usr/libexec"
 
-	doinitd "${FILESDIR}/zfs-shutdown"
-
-	exeinto /usr/share/zfs
-	doexe "${FILESDIR}/linuxrc"
+	if use rootfs
+	then
+		doinitd "${FILESDIR}/zfs-shutdown"
+		exeinto /usr/share/zfs
+		doexe "${FILESDIR}/linuxrc"
+	fi
 
 }
 
@@ -106,7 +112,7 @@ pkg_postinst() {
 	[ -e /etc/runlevels/boot/zfs ] \
 		|| ewarn 'You should add zfs to the boot runlevel.'
 
-	[ -e /etc/runlevels/shutdown/zfs-shutdown ] \
-		|| ewarn 'You should add zfs-shutdown to the shutdown runlevel.'
+	use rootfs && ([ -e /etc/runlevels/shutdown/zfs-shutdown ] \
+		|| ewarn 'You should add zfs-shutdown to the shutdown runlevel.')
 
 }

@@ -32,6 +32,7 @@ RDEPEND="${DEPEND}
 	test-suite? (
 		sys-apps/gawk
 		sys-apps/util-linux
+		sys-devel/bc
 		sys-block/parted
 		sys-fs/lsscsi
 		sys-fs/mdadm

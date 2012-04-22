@@ -111,10 +111,10 @@ pkg_postinst() {
 
 	use x86 && ewarn "32-bit kernels are unsupported by ZFSOnLinux upstream. Do not file bug reports."
 
-	[ -e /etc/runlevels/boot/zfs ] \
+	[ -e "${EROOT}/etc/runlevels/boot/zfs" ] \
 		|| ewarn 'You should add zfs to the boot runlevel.'
 
-	use rootfs && ([ -e /etc/runlevels/shutdown/zfs-shutdown ] \
+	use rootfs && ([ -e "${EROOT}/etc/runlevels/shutdown/zfs-shutdown" ] \
 		|| ewarn 'You should add zfs-shutdown to the shutdown runlevel.')
 
 }

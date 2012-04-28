@@ -16,8 +16,8 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="virtual/pmake
-	=sys-freebsd/freebsd-mk-defs-${PV}*"
+DEPEND="=sys-freebsd/freebsd-mk-defs-${PV}*
+	virtual/pmake"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}"
@@ -49,7 +49,7 @@ src_prepare() {
 src_compile() {
 
 	cd "${WORKDIR}/lib/libstand"
-	env MAKESYSPATH=/usr/share/mk/freebsd __MAKE_CONF= CFLAGS="-nostdinc -I /var/tmp/portage/sys-libs/libstand-9.0/temp/include -O2 -pipe" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Build failure"
+	env MAKESYSPATH=/usr/share/mk/freebsd __MAKE_CONF= CFLAGS="-nostdinc -I ${T}/include -O2 -pipe" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Build failure"
 
 }
 

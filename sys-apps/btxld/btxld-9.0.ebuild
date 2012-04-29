@@ -6,7 +6,7 @@ EAPI=4
 
 inherit eutils
 
-DESCRIPTION="Support library for standalone executables from FreeBSD"
+DESCRIPTION="Link editor for BTX clients from FreeBSD"
 HOMEPAGE="http://www.freebsd.org/"
 SRC_URI="mirror://gentoo/freebsd-usbin-${PV}.tar.bz2
 			mirror://gentoo/freebsd-sys-${PV}.tar.bz2"
@@ -24,7 +24,7 @@ RDEPEND="${DEPEND}"
 S="${WORKDIR}"
 
 src_prepare() {
-	epatch "${FILESDIR}/${P}-endian.patch"
+	epatch "${FILESDIR}/${P}-libbsd-headers.patch"
 	sed -i 's/a_midmag/a_info/g' "${S}/sys/sys/imgact_aout.h"
 	sed -i 's/#include <sys\/elf_common.h>/&\n#include <stdint.h>/' "${S}/sys/sys/elf32.h"
 

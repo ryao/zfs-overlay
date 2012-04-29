@@ -1,5 +1,5 @@
 diff --git a/usr.sbin/btxld/btxld.c b/usr.sbin/btxld/btxld.c
-index d0ceb4d..4bfd0cb 100644
+index d0ceb4d..f86f94d 100644
 --- a/usr.sbin/btxld/btxld.c
 +++ b/usr.sbin/btxld/btxld.c
 @@ -30,7 +30,7 @@ static const char rcsid[] =
@@ -11,6 +11,26 @@ index d0ceb4d..4bfd0cb 100644
  #include <sys/stat.h>
  #include <sys/mman.h>
  
+@@ -42,14 +42,14 @@ static const char rcsid[] =
+ #include <netinet/in.h>
+ 
+ #include <a.out.h>
+-#include <err.h>
++#include <bsd/err.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <stdarg.h>
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <string.h>
+-#include <unistd.h>
++#include <bsd/stdio.h>
++#include <bsd/stdlib.h>
++#include <bsd/string.h>
++#include <bsd/unistd.h>
+ 
+ #include "btx.h"
+ #include "elfh.h"
 diff --git a/usr.sbin/btxld/elfh.c b/usr.sbin/btxld/elfh.c
 index 82ff0e1..3e89705 100644
 --- a/usr.sbin/btxld/elfh.c

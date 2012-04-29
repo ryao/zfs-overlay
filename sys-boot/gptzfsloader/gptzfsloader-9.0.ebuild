@@ -4,7 +4,7 @@
 
 EAPI=4
 
-DESCRIPTION="Support library for standalone executables from FreeBSD"
+DESCRIPTION="Bootloader for booting off GPT formatted ZFS disks."
 HOMEPAGE="http://www.freebsd.org/"
 SRC_URI="mirror://gentoo/freebsd-contrib-${PV}.tar.bz2
 			mirror://gentoo/freebsd-lib-${PV}.tar.bz2

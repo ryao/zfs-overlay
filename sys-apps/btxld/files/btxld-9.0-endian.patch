@@ -1,0 +1,26 @@
+diff --git a/usr.sbin/btxld/btxld.c b/usr.sbin/btxld/btxld.c
+index d0ceb4d..4bfd0cb 100644
+--- a/usr.sbin/btxld/btxld.c
++++ b/usr.sbin/btxld/btxld.c
+@@ -30,7 +30,7 @@ static const char rcsid[] =
+ #endif /* not lint */
+ 
+ #include <sys/param.h>
+-#include <sys/endian.h>
++#include <bsd/sys/endian.h>
+ #include <sys/stat.h>
+ #include <sys/mman.h>
+ 
+diff --git a/usr.sbin/btxld/elfh.c b/usr.sbin/btxld/elfh.c
+index 82ff0e1..3e89705 100644
+--- a/usr.sbin/btxld/elfh.c
++++ b/usr.sbin/btxld/elfh.c
+@@ -27,7 +27,7 @@
+  */
+ 
+ #include <sys/types.h>
+-#include <sys/endian.h>
++#include <bsd/sys/endian.h>
+ 
+ #include <stddef.h>
+ #include "elfh.h"

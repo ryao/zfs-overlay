@@ -108,6 +108,7 @@ src_install() {
 }
 
 pkg_postinst() {
+	linux-mod_pkg_postinst
 
 	use x86 && ewarn "32-bit kernels are unsupported by ZFSOnLinux upstream. Do not file bug reports."
 

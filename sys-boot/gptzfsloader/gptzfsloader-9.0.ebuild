@@ -88,12 +88,12 @@ src_install() {
 	dodir /boot
 
 	cd "${S}/sys/boot/i386/pmbr"
-	install -m 444   pmbr /boot
+	install -m 444   pmbr "${ED}/boot"
 
 	cd "${S}/sys/boot/i386/gptzfsboot"
-	install -m 444 gptzfsboot /boot
+	install -m 444 gptzfsboot "${ED}/boot"
 
 	cd "${S}/sys/boot/i386/zfsloader"
-	install -m 555 -b zfsloader /boot/zfsloader
+	install -m 555 -b zfsloader "${ED}boot/zfsloader"
 
 }

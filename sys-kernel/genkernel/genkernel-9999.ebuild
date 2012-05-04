@@ -8,6 +8,7 @@
 VERSION_BUSYBOX='1.19.3'
 VERSION_DMAP='1.02.22'
 VERSION_DMRAID='1.0.0.rc14'
+VERSION_DROPBEAR='2012.55'
 VERSION_MDADM='3.1.5'
 VERSION_E2FSPROGS='1.42'
 VERSION_FUSE='2.8.6'
@@ -23,6 +24,8 @@ BB_HOME="http://www.busybox.net/downloads"
 
 COMMON_URI="${DM_HOME}/dmraid-${VERSION_DMRAID}.tar.bz2
 		${DM_HOME}/old/dmraid-${VERSION_DMRAID}.tar.bz2
+		http://matt.ucc.asn.au/dropbear/releases/dropbear-${VERSION_DROPBEAR}.tar.bz2
+		http://matt.ucc.asn.au/dropbear/testing/dropbear-${VERSION_DROPBEAR}.tar.bz2
 		mirror://kernel/linux/utils/raid/mdadm/mdadm-${VERSION_MDADM}.tar.bz2
 		${RH_HOME}/lvm2/LVM2.${VERSION_LVM}.tgz
 		${RH_HOME}/lvm2/old/LVM2.${VERSION_LVM}.tgz
@@ -88,6 +91,7 @@ src_install() {
 	sed \
 		-e "s:VERSION_BUSYBOX:$VERSION_BUSYBOX:" \
 		-e "s:VERSION_DMAP:$VERSION_DMAP:" \
+		-e "s:VERSION_DROPBEAR:$VERSION_DROPBEAR:" \
 		-e "s:VERSION_MDADM:$VERSION_MDADM:" \
 		-e "s:VERSION_DMRAID:$VERSION_DMRAID:" \
 		-e "s:VERSION_E2FSPROGS:$VERSION_E2FSPROGS:" \
@@ -119,6 +123,7 @@ src_install() {
 	cp -f \
 		"${DISTDIR}"/mdadm-${VERSION_MDADM}.tar.bz2 \
 		"${DISTDIR}"/dmraid-${VERSION_DMRAID}.tar.bz2 \
+		"${DISTDIR}"/dropbear-${VERSION_DROPBEAR}.tar.bz2 \
 		"${DISTDIR}"/LVM2.${VERSION_LVM}.tgz \
 		"${DISTDIR}"/device-mapper.${VERSION_DMAP}.tgz \
 		"${DISTDIR}"/e2fsprogs-${VERSION_E2FSPROGS}.tar.gz \

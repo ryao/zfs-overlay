@@ -27,6 +27,8 @@ S="${WORKDIR}"
 
 src_prepare() {
 	sed -i 's/-m elf_i386_fbsd/-m elf_i386/' "${S}/sys/boot/i386/Makefile.inc"
+	sed -i 's/-Ttext /-Wl,-Ttext,/' "${S}/sys/boot/i386/pmbr/Makefile" \
+		"${S}/sys/boot/i386/btx/btx/Makefile"
 	#sed -i 's/-m elf_i386_fbsd//' "${S}/sys/boot/i386/Makefile.inc"
 	#sed -i 's/ ${BTXLDR}//' "${S}/sys/boot/i386/loader/Makefile"
 

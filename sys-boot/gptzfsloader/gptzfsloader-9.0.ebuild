@@ -20,6 +20,7 @@ IUSE=""
 
 DEPEND="sys-apps/btxld
 	=sys-freebsd/freebsd-mk-defs-${PV}*
+	=sys-libs/libstand-${PV}*
 	virtual/pmake"
 RDEPEND="${DEPEND}"
 

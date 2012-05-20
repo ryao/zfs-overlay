@@ -16,13 +16,15 @@ SRC_URI="mirror://gentoo/freebsd-contrib-${PV}.tar.bz2
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE=""
+IUSE="kernel_freebsd"
 
-DEPEND="sys-apps/btxld
-	=sys-freebsd/freebsd-mk-defs-${PV}*
-	=sys-libs/libstand-${PV}*
-	virtual/pmake"
-RDEPEND="${DEPEND}"
+DEPEND="=sys-freebsd/freebsd-mk-defs-${PV}*
+	virtual/pmake
+	!kernel_freebsd? ( =sys-apps/btxld-${PV}*
+		=sys-libs/libstand-${PV}* )
+	kernel_freebsd? ( =sys-freebsd/freebsd-usbin-${PV}*
+		=sys-freebsd/freebsd-lib-${PV}* )"
+RDEPEND=""
 
 S="${WORKDIR}"
 

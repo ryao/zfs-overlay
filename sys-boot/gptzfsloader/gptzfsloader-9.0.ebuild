@@ -86,8 +86,7 @@ src_compile() {
 	env LD="$(tc-getLD) -m elf_i386" CC="$(tc-getCC) -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building libi386"
 
 	cd "${S}/sys/boot/i386/btx/btxldr"
-	${CC:-$(tc-getCC)} -O2 -pipe  -DLOADER_ADDRESS=0x200000 -ffreestanding -mpreferred-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -msoft-float -m32 -march=i386 -std=gnu99 -m32 -c btxldr.S
-	${CC:-$(tc-getCC)} -O2 -pipe  -DLOADER_ADDRESS=0x200000 -ffreestanding -mpreferred-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -msoft-float -m32 -march=i386 -std=gnu99 -e start -Ttext 0x200000 -Wl,-N,-S,--oformat,binary -nostdlib -o btxldr btxldr.o
+	env LD="$(tc-getLD) -m elf_i386" CC="$(tc-getCC) -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building btxldr"
 
 	cd "${S}/sys/boot/i386/zfsloader"
 	env LD="$(tc-getLD) -m elf_i386" CC="$(tc-getCC) -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building zfsloader"

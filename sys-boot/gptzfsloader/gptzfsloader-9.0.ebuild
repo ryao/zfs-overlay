@@ -34,8 +34,12 @@ src_prepare() {
 		"${S}/sys/boot/i386/btx/btx/Makefile" \
 		"${S}/sys/boot/i386/btx/btxldr/Makefile" \
 		"${S}/sys/boot/i386/loader/Makefile"
-	#sed -i 's/-m elf_i386_fbsd//' "${S}/sys/boot/i386/Makefile.inc"
-	#sed -i 's/ ${BTXLDR}//' "${S}/sys/boot/i386/loader/Makefile"
+
+	sed -e '/-fomit-frame-pointer/d' -e '/-mno-align-long-strings/d' \
+		-i "${S}/sys/boot/i386/boot2/Makefile" \
+		-i "${S}/sys/boot/i386/gptboot/Makefile" \
+		-i "${S}/sys/boot/i386/gptzfsboot/Makefile" \
+		-i "${S}/sys/boot/i386/zfsboot/Makefile" || die
 
 	mkdir "${T}/include"
 	cd "${T}/include"

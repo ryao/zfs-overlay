@@ -4,6 +4,8 @@
 
 EAPI=4
 
+inherit toolchain-funcs
+
 DESCRIPTION="Bootloader for booting off GPT formatted ZFS disks."
 HOMEPAGE="http://www.freebsd.org/"
 SRC_URI="mirror://gentoo/freebsd-contrib-${PV}.tar.bz2
@@ -24,8 +26,8 @@ RDEPEND="${DEPEND}"
 S="${WORKDIR}"
 
 src_prepare() {
-	#sed -i 's/-m elf_i386_fbsd/-m elf_i386/' "${S}/sys/boot/i386/Makefile.inc"
-	sed -i 's/-m elf_i386_fbsd//' "${S}/sys/boot/i386/Makefile.inc"
+	sed -i 's/-m elf_i386_fbsd/-m elf_i386/' "${S}/sys/boot/i386/Makefile.inc"
+	#sed -i 's/-m elf_i386_fbsd//' "${S}/sys/boot/i386/Makefile.inc"
 	#sed -i 's/ ${BTXLDR}//' "${S}/sys/boot/i386/loader/Makefile"
 
 	mkdir "${T}/include"
@@ -64,23 +66,23 @@ src_compile() {
 	env AFLAGS="--32" CFLAGS="-m32" pmake || die "Failure building btx/lib"
 
 	cd "${S}/sys/boot/i386/gptzfsboot"
-	env LD="ld -m elf_i386" CC="gcc -m32 -nostdinc -I ${T}/include" pmake || die "Failure building gptzfsboot"
+	env LD="$(tc-getLD) -m elf_i386" CC="$(tc-getCC) -m32 -nostdinc -I ${T}/include" pmake || die "Failure building gptzfsboot"
 
 	cd "${S}/sys/boot/ficl"
-	env LD="ld -m elf_i386" CC="gcc -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building ficl"
+	env LD="$(tc-getLD) -m elf_i386" CC="$(tc-getCC) -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building ficl"
 
 	cd "${S}/sys/boot/zfs"
-	env LD="ld -m elf_i386" CC="gcc -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building zfs"
+	env LD="$(tc-getLD) -m elf_i386" CC="$(tc-getCC) -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building zfs"
 
 	cd "${S}/sys/boot/i386/libi386"
-	env LD="ld -m elf_i386" CC="gcc -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building libi386"
+	env LD="$(tc-getLD) -m elf_i386" CC="$(tc-getCC) -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building libi386"
 
 	cd "${S}/sys/boot/i386/btx/btxldr"
-	${CC:-cc} -O2 -pipe  -DLOADER_ADDRESS=0x200000 -ffreestanding -mpreferred-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -msoft-float -m32 -march=i386 -std=gnu99 -m32 -c btxldr.S
-	${CC:-cc} -O2 -pipe  -DLOADER_ADDRESS=0x200000 -ffreestanding -mpreferred-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -msoft-float -m32 -march=i386 -std=gnu99 -e start -Ttext 0x200000 -Wl,-N,-S,--oformat,binary -nostdlib -o btxldr btxldr.o
+	${CC:-$(tc-getCC)} -O2 -pipe  -DLOADER_ADDRESS=0x200000 -ffreestanding -mpreferred-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -msoft-float -m32 -march=i386 -std=gnu99 -m32 -c btxldr.S
+	${CC:-$(tc-getCC)} -O2 -pipe  -DLOADER_ADDRESS=0x200000 -ffreestanding -mpreferred-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -msoft-float -m32 -march=i386 -std=gnu99 -e start -Ttext 0x200000 -Wl,-N,-S,--oformat,binary -nostdlib -o btxldr btxldr.o
 
 	cd "${S}/sys/boot/i386/zfsloader"
-	env LD="ld -m elf_i386" CC="gcc -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building zfsloader"
+	env LD="$(tc-getLD) -m elf_i386" CC="$(tc-getCC) -m32 -nostdinc -I ${T}/include" pmake MACHINE_CPUARCH=amd64 MACHINE_ARCH=amd64 || die "Failure building zfsloader"
 
 }
 

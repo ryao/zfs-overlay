@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit toolchain-funcs
+inherit flag-o-matic toolchain-funcs
 
 DESCRIPTION="Bootloader for booting off GPT formatted ZFS disks."
 HOMEPAGE="http://www.freebsd.org/"
@@ -31,7 +31,8 @@ S="${WORKDIR}"
 src_prepare() {
 	sed -i 's/-m elf_i386_fbsd/-m elf_i386/' "${S}/sys/boot/i386/Makefile.inc"
 	sed -i 's/-Ttext /-Wl,-Ttext,/' "${S}/sys/boot/i386/pmbr/Makefile" \
-		"${S}/sys/boot/i386/btx/btx/Makefile"
+		"${S}/sys/boot/i386/btx/btx/Makefile" \
+		"${S}/sys/boot/i386/loader/Makefile"
 	#sed -i 's/-m elf_i386_fbsd//' "${S}/sys/boot/i386/Makefile.inc"
 	#sed -i 's/ ${BTXLDR}//' "${S}/sys/boot/i386/loader/Makefile"
 
@@ -57,6 +58,7 @@ src_prepare() {
 }
 
 src_compile() {
+	strip-flags
 
 	export MAKESYSPATH=/usr/share/mk/freebsd
 	export __MAKE_CONF=

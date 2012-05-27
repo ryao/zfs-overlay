@@ -60,6 +60,9 @@ src_prepare() {
 	ln -s "${S}/sys/boot/ficl/i386/sysdep.h"
 	ln -s "${S}/lib/msun/src/math.h"
 
+	epatch "${FILESDIR}/boot0-9.0-fix-clang-builds.patch"
+	epatch "${FILESDIR}/boot0-9.0-fix-linux-clang-builds.patch"
+
 }
 
 src_compile() {

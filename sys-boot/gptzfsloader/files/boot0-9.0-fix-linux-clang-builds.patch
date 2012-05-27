@@ -1,0 +1,16 @@
+diff --git a/sys/boot/i386/libi386/Makefile b/sys/boot/i386/libi386/Makefile
+index 4025c4c..2bbc681 100644
+--- a/sys/boot/i386/libi386/Makefile
++++ b/sys/boot/i386/libi386/Makefile
+@@ -54,11 +54,6 @@ CFLAGS+=	-I${.CURDIR}/../../common -I${.CURDIR}/../common \
+ # the location of libstand
+ CFLAGS+=	-I${.CURDIR}/../../../../lib/libstand/
+ 
+-.if ${CC:T:Mclang} == "clang"
+-# XXX: clang integrated-as doesn't grok .codeNN directives yet
+-CFLAGS+=	${.IMPSRC:T:Mamd64_tramp.S:C/^.+$/-no-integrated-as/}
+-.endif
+-
+ .if ${MACHINE_CPUARCH} == "amd64"
+ CLEANFILES+=	machine
+ machine:

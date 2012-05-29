@@ -8,7 +8,7 @@ AT_M4DIR="config"
 AUTOTOOLS_AUTORECONF="1"
 AUTOTOOLS_IN_SOURCE_BUILD="1"
 
-inherit flag-o-matic git-2 linux-mod autotools-utils
+inherit autotools-utils eutils flag-o-matic git-2 linux-mod
 
 DESCRIPTION="The Solaris Porting Layer is a Linux kernel module which provides many of the Solaris kernel APIs"
 HOMEPAGE="http://zfsonlinux.org/"
@@ -38,6 +38,10 @@ pkg_setup() {
 src_prepare() {
 	# Workaround for hard coded path
 	sed -i "s|/sbin/lsmod|/bin/lsmod|" scripts/check.sh || die
+
+	# Apply user patches
+	epatch_user
+
 	autotools-utils_src_prepare
 }
 

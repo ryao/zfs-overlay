@@ -68,6 +68,8 @@ src_prepare() {
 
 src_compile() {
 	strip-flags
+	append-flags "-fno-strict-aliasing"
+	export NOFLAGSTRIP=yes
 
 	export MAKESYSPATH=/usr/share/mk/freebsd
 	export __MAKE_CONF=

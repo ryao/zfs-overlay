@@ -76,7 +76,6 @@ src_prepare() {
 
 src_configure() {
 	use custom-cflags || strip-flags
-	use hardened && append-flags -fplugin-arg-constify_plugin-no-constify
 	set_arch_to_kernel
 	local myeconfargs=(
 		--bindir="${EPREFIX}/bin"

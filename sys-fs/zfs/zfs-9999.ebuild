@@ -74,6 +74,7 @@ src_prepare() {
 
 src_configure() {
 	use custom-cflags || strip-flags
+	append-flags -DDISABLE_PAX_CONSTIFY_PLUGIN
 	set_arch_to_kernel
 	local myeconfargs=(
 		--bindir="${EPREFIX}/bin"

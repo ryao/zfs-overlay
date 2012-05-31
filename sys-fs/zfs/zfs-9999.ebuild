@@ -19,7 +19,7 @@ EGIT_BRANCH="gentoo"
 LICENSE="CDDL GPL-2"
 SLOT="0"
 KEYWORDS=""
-IUSE="custom-cflags debug dracut +rootfs test test-suite static-libs"
+IUSE="custom-cflags debug dracut hardened +rootfs test test-suite static-libs"
 
 DEPEND="
 	>=sys-kernel/spl-${PV}
@@ -66,6 +66,8 @@ src_prepare() {
 	# Workaround rename
 	sed -i "s|/usr/bin/scsi-rescan|/usr/sbin/rescan-scsi-bus|" scripts/common.sh.in || die
 
+	epatch "${FILESDIR}/${PN}-pax-no-constify.patch"
+
 	# Apply user patches
 	epatch_user
 
@@ -74,7 +76,7 @@ src_prepare() {
 
 src_configure() {
 	use custom-cflags || strip-flags
-	append-flags -DDISABLE_PAX_CONSTIFY_PLUGIN
+	use hardened && append-flags -fplugin-arg-constify_plugin-no-constify
 	set_arch_to_kernel
 	local myeconfargs=(
 		--bindir="${EPREFIX}/bin"

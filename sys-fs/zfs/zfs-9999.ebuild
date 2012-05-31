@@ -19,7 +19,7 @@ EGIT_BRANCH="gentoo"
 LICENSE="CDDL GPL-2"
 SLOT="0"
 KEYWORDS=""
-IUSE="custom-cflags debug dracut hardened +rootfs test test-suite static-libs"
+IUSE="custom-cflags debug dracut +rootfs test test-suite static-libs"
 
 DEPEND="
 	>=sys-kernel/spl-${PV}
@@ -65,8 +65,6 @@ src_prepare() {
 
 	# Workaround rename
 	sed -i "s|/usr/bin/scsi-rescan|/usr/sbin/rescan-scsi-bus|" scripts/common.sh.in || die
-
-	use hardened && epatch "${FILESDIR}/${PN}-pax-no-constify.patch"
 
 	# Apply user patches
 	epatch_user

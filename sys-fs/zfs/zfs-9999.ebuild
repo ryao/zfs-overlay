@@ -8,7 +8,7 @@ AT_M4DIR="config"
 AUTOTOOLS_AUTORECONF="1"
 AUTOTOOLS_IN_SOURCE_BUILD="1"
 
-inherit autotools-utils eutils flag-o-matic git-2 linux-mod toolchain-funcs
+inherit eutils flag-o-matic git-2 linux-mod toolchain-funcs autotools-utils
 
 DESCRIPTION="Native ZFS for Linux"
 HOMEPAGE="http://zfsonlinux.org/"

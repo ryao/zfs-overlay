@@ -8,7 +8,7 @@ AT_M4DIR="config"
 AUTOTOOLS_AUTORECONF="1"
 AUTOTOOLS_IN_SOURCE_BUILD="1"
 
-inherit eutils flag-o-matic git-2 linux-mod toolchain-funcs autotools-utils
+inherit flag-o-matic git-2 linux-mod toolchain-funcs autotools-utils
 
 DESCRIPTION="Native ZFS for Linux"
 HOMEPAGE="http://zfsonlinux.org/"
@@ -66,9 +66,6 @@ src_prepare() {
 
 	# Workaround rename
 	sed -i "s|/usr/bin/scsi-rescan|/usr/sbin/rescan-scsi-bus|" scripts/common.sh.in || die
-
-	# Apply user patches
-	epatch_user
 
 	autotools-utils_src_prepare
 }

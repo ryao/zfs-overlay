@@ -66,7 +66,7 @@ src_prepare() {
 	# Workaround rename
 	sed -i "s|/usr/bin/scsi-rescan|/usr/sbin/rescan-scsi-bus|" scripts/common.sh.in || die
 
-	epatch "${FILESDIR}/${PN}-pax-no-constify.patch"
+	use hardened && epatch "${FILESDIR}/${PN}-pax-no-constify.patch"
 
 	# Apply user patches
 	epatch_user

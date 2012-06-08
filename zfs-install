@@ -134,7 +134,7 @@ chmod u+x /usr/local/sbin/portage-cgroup
 echo 'PORTAGE_IONICE_COMMAND="/usr/local/sbin/portage-cgroup \${PID}"' >> /etc/make.conf
 
 # Experimental swap support (requires patches)
-zfs create -o primarycache=metadata -o secondarycache=none -V 8G rpool/swap
+zfs create -o sync=always -o primarycache=metadata -o secondarycache=none -V 8G rpool/swap
 mkswap -f /dev/zvol/rpool/swap
 # Edit fstab to use swap here
 

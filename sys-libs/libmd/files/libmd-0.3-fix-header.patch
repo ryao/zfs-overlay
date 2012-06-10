@@ -1,0 +1,34 @@
+diff --git a/.rmd160.c.swp b/.rmd160.c.swp
+deleted file mode 100644
+index 7b0d774..0000000
+Binary files a/.rmd160.c.swp and /dev/null differ
+diff --git a/.rmd160.h.swp b/.rmd160.h.swp
+deleted file mode 100644
+index 0bcc8ea..0000000
+Binary files a/.rmd160.h.swp and /dev/null differ
+diff --git a/rmd160.c b/rmd160.c
+index a1d10e7..dd42e69 100644
+--- a/rmd160.c
++++ b/rmd160.c
+@@ -378,7 +378,7 @@ RMD160Init (RMD160_CTX * ctx)
+    Update the RIPEMD-160 hash state for a block of data.
+  */
+ void
+-RMD160Update (RMD160_CTX * ctx, u_int8_t const *buf, size_t len)
++RMD160Update (RMD160_CTX * ctx, const unsigned char *buf, size_t len)
+ {
+   unsigned i;
+ 
+diff --git a/rmd160.h b/rmd160.h
+index 0dd0867..7ecb62a 100644
+--- a/rmd160.h
++++ b/rmd160.h
+@@ -31,7 +31,7 @@ typedef struct RMD160Context {
+ 
+ __BEGIN_DECLS
+ void   RMD160Init(RMD160_CTX *);
+-void   RMD160Update(RMD160_CTX *, const unsigned char *, unsigned int);
++void   RMD160Update(RMD160_CTX *, const unsigned char *, size_t);
+ void   RMD160Final(unsigned char [RMD160_HASHBYTES], RMD160_CTX *);
+ char * RMD160End(RMD160_CTX *, char *);
+ char * RMD160File(const char *, char *);

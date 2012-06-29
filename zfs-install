@@ -67,8 +67,6 @@ emerge sys-kernel/gentoo-sources
 genkernel kernel --no-clean --no-mountboot
 
 # Install ZFS
-echo "=sys-kernel/spl-9999 **" >> /etc/portage/package.accept_keywords
-echo "=sys-fs/zfs-9999 **" >> /etc/portage/package.accept_keywords
 emerge sys-fs/zfs
 
 # Add zfs to boot runlevel

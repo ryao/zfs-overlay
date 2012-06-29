@@ -85,8 +85,6 @@ emerge sys-apps/gptfdisk
 #
 
 # Install GRUB2
-echo "=sys-boot/os-prober-1.47 ~amd64" >> /etc/portage/package.accept_keywords
-echo "<sys-boot/grub-9999 **" >> /etc/portage/package.accept_keywords
 echo "sys-boot/grub libzfs" >> /etc/portage/package.use
 env FEATURES='-sandbox -usersandbox' emerge sys-boot/grub:2
 touch /etc/mtab

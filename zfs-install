@@ -50,12 +50,9 @@ env-update; source /etc/profile; export PS1="(chroot) $PS1"; cd
 # Get portage snapshot
 emerge --sync
 
-# Update OpenRC to satisfy genkernel dependency
-echo "=sys-apps/openrc-0.9.9.3 **" >> /etc/portage/package.accept_keywords
-emerge --oneshot sys-apps/openrc
-
 # Install genkernel
-echo "=sys-kernel/genkernel-3.4.36 **" >> /etc/portage/package.accept_keywords
+# Note that keywording is only needed on Gentoo stable and USE=-crypt is just to avoid unnecessary dependencies.
+echo "sys-kernel/genkernel ~amd64" >> /etc/portage/package.accept_keywords
 echo "sys-kernel/genkernel -crypt" >> /etc/portage/package.use
 emerge sys-kernel/genkernel
 

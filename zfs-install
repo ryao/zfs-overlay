@@ -55,7 +55,7 @@ echo "=sys-apps/openrc-0.9.9.3 **" >> /etc/portage/package.accept_keywords
 emerge --oneshot sys-apps/openrc
 
 # Install genkernel
-echo "=sys-kernel/genkernel-3.4.30 **" >> /etc/portage/package.accept_keywords
+echo "=sys-kernel/genkernel-3.4.36 **" >> /etc/portage/package.accept_keywords
 echo "sys-kernel/genkernel -crypt" >> /etc/portage/package.use
 emerge sys-kernel/genkernel
 
@@ -88,7 +88,7 @@ emerge sys-apps/gptfdisk
 echo "=sys-boot/os-prober-1.47 ~amd64" >> /etc/portage/package.accept_keywords
 echo "<sys-boot/grub-9999 **" >> /etc/portage/package.accept_keywords
 echo "sys-boot/grub libzfs" >> /etc/portage/package.use
-env FEATURES=-sandbox emerge sys-boot/grub:2
+env FEATURES='-sandbox -usersandbox' emerge sys-boot/grub:2
 touch /etc/mtab
 grub2-install /dev/sda
 grub2-mkconfig -o /boot/grub2/grub.cfg

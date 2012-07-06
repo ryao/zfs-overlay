@@ -54,6 +54,7 @@ emerge --sync
 # Note that keywording is only needed on Gentoo stable and USE=-crypt is just to avoid unnecessary dependencies.
 echo "sys-kernel/genkernel ~amd64" >> /etc/portage/package.accept_keywords
 echo "sys-kernel/genkernel -crypt" >> /etc/portage/package.use
+echo "sys-apps/openrc ~amd64" >> /etc/portage/package.accept_keywords
 emerge sys-kernel/genkernel
 
 # Install sources

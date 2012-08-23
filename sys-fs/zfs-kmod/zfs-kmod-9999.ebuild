@@ -8,14 +8,13 @@ AT_M4DIR="config"
 AUTOTOOLS_AUTORECONF="1"
 AUTOTOOLS_IN_SOURCE_BUILD="1"
 
-inherit bash-completion-r1 flag-o-matic linux-mod toolchain-funcs autotools-utils
+inherit bash-completion-r1 flag-o-matic git-2 linux-mod toolchain-funcs autotools-utils
 
 DESCRIPTION="Linux ZFS kernel module for sys-fs/zfs"
 HOMEPAGE="http://zfsonlinux.org/"
 SRC_URI=""
 EGIT_REPO_URI="git://github.com/ryao/zfs.git"
 EGIT_BRANCH="gentoo"
-
 
 LICENSE="BSD-2 CDDL MIT"
 SLOT="0"

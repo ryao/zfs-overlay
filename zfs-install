@@ -108,8 +108,8 @@ zfs snapshot rpool/ROOT/gentoo@install
 
 # Additional tips
 
-# ARC tuning - You can configure the RAM that ARC uses
-echo options zfs zfs_arc_max=512M > /etc/modprobe.d/zfs.conf
+# ARC tuning - You can configure the RAM that ARC uses in bytes
+echo options zfs zfs_arc_max=536870912 >> /etc/modprobe.d/zfs.conf
 
 # Set portage niceness to minimize potential for updates to cause lag
 echo PORTAGE_NICENESS=19 >> /etc/make.conf
@@ -127,12 +127,9 @@ END
 chmod u+x /usr/local/sbin/portage-cgroup
 echo 'PORTAGE_IONICE_COMMAND="/usr/local/sbin/portage-cgroup \${PID}"' >> /etc/make.conf
 
-# Experimental swap support (requires patches)
+# Swap support
 zfs create -o sync=always -o primarycache=metadata -o secondarycache=none -V 8G rpool/swap
 mkswap -f /dev/zvol/rpool/swap
-# Increase vm.min_free_kbytes to help alleviate external memory fragmentation inside the Linux kernel.
-sysctl vm.min_free_kbytes=262144
-echo vm.min_free_kbytes=262144 >> /etc/sysctl.conf
 # Edit fstab to use swap here
 
 #

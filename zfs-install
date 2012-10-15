@@ -80,6 +80,12 @@ emerge sys-apps/gptfdisk
 # Use gdisk to make partition 2 a BIOS boot partition (type EF02) from sectors 48 to 2047
 # Then restart and re-enter the chroot to force the kernel to reload the partition tables.
 # Otherwise, GRUB2 installation might fail.
+
+# Reimport your pool after rebooting
+zpool import -f -o cachefile= -R /mnt/gentoo rpool
+
+#
+# Repeat lines 36 through 48 to re-enter the chroot.
 #
 
 # Install GRUB2

@@ -73,7 +73,7 @@ rc-update add zfs boot
 # Add zfs-shutdown to shutdown runlevel
 rc-update add zfs-shutdown shutdown
 
-# Install gptdisk
+# Install gptfdisk
 emerge sys-apps/gptfdisk
 
 #

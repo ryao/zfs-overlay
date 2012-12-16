@@ -32,7 +32,7 @@ DEPEND="${COMMON_DEPEND}
 RDEPEND="${COMMON_DEPEND}
 	!kernel-builtin? ( =sys-fs/zfs-kmod-${PV}* )
 	!sys-fs/zfs-fuse
-	!prefix? ( sys-fs/udev )
+	!prefix? ( virtual/udev )
 	test-suite? (
 		sys-apps/gawk
 		sys-apps/util-linux

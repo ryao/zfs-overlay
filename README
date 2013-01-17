@@ -1,3 +1,9 @@
+This is where Gentoo ZFS development is done. All useful changes made here are
+integrated with Gentoo's main tree after they have been properly validated.
+Only end users who have received explicit directions from ryao should use it.
+Those that have should switch back to the main tree as soon as they have been
+told that their issue has been fixed.
+
 To add this overlay to a Gentoo system, run the following command:
 
 layman -o https://raw.github.com/ryao/zfs-overlay/master/overlay.xml -f -a zfs

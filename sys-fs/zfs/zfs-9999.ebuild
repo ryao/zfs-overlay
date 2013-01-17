@@ -14,7 +14,7 @@ DESCRIPTION="Userland utilities for ZFS Linux kernel module"
 HOMEPAGE="http://zfsonlinux.org/"
 SRC_URI=""
 EGIT_REPO_URI="git://github.com/ryao/zfs.git"
-EGIT_BRANCH="gentoo"
+EGIT_BRANCH="${EGIT_BRANCH:-gentoo}"
 
 LICENSE="BSD-2 CDDL MIT"
 SLOT="0"
@@ -96,4 +96,8 @@ pkg_postinst() {
 	use rootfs && ([ -e "${EROOT}/etc/runlevels/shutdown/zfs-shutdown" ] \
 		|| ewarn 'You should add zfs-shutdown to the shutdown runlevel.')
 
+	eerror "This ebuild is from the zfs-overlay, which is meant strictly for"
+	eerror "development. Everyone who has not spoken directly to ryao should NOT use"
+	eerror "it. If you have not spoken to ryao, please delete the overlay and"
+	eerror "rebuild ${P} from the main tree."
 }

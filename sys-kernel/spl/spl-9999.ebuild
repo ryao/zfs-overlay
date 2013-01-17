@@ -14,7 +14,7 @@ DESCRIPTION="The Solaris Porting Layer is a Linux kernel module which provides m
 HOMEPAGE="http://zfsonlinux.org/"
 SRC_URI=""
 EGIT_REPO_URI="git://github.com/ryao/spl.git"
-EGIT_BRANCH="gentoo"
+EGIT_BRANCH="${EGIT_BRANCH:-gentoo}"
 
 LICENSE="|| ( GPL-2 GPL-3 )"
 SLOT="0"
@@ -74,4 +74,11 @@ src_test() {
 	else
 		autotools-utils_src_test
 	fi
+}
+
+pkg_postinst() {
+	eerror "This ebuild is from the zfs-overlay, which is meant strictly for"
+	eerror "development. Everyone who has not spoken directly to ryao should NOT use"
+	eerror "it. If you have not spoken to ryao, please delete the overlay and"
+	eerror "rebuild ${P} from the main tree."
 }

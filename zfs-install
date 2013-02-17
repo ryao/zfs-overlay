@@ -70,9 +70,6 @@ emerge sys-fs/zfs
 # Add zfs to boot runlevel
 rc-update add zfs boot
 
-# Add zfs-shutdown to shutdown runlevel
-rc-update add zfs-shutdown shutdown
-
 # Install gptfdisk
 emerge sys-apps/gptfdisk
 
@@ -134,8 +131,9 @@ chmod u+x /usr/local/sbin/portage-cgroup
 echo 'PORTAGE_IONICE_COMMAND="/usr/local/sbin/portage-cgroup \${PID}"' >> /etc/make.conf
 
 # Swap support
-zfs create -o sync=always -o primarycache=metadata -o secondarycache=none -V 8G rpool/swap
+zfs create -o sync=always -o primarycache=metadata -o secondarycache=none -b 4K -V 8G rpool/swap
 mkswap -f /dev/zvol/rpool/swap
+zfs snapshot rpool/swap@install
 # Edit fstab to use swap here
 
 #

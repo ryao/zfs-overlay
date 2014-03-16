@@ -1,5 +1,7 @@
 #
-# Boot install CD (i.e. Gentoo 12.1 LiveDVD)
+# Boot Linux Live CD with ZFS support
+# The Funtoo variant of System Rescue CD is highly recommended:
+# http://ftp.osuosl.org/pub/funtoo/distfiles/sysresccd/
 #
 
 # Create pool
@@ -31,7 +33,7 @@ zfs create -o mountpoint=/var/tmp/ccache -o compression=lz4 rpool/GENTOO/ccache
 zpool set bootfs=rpool/ROOT/gentoo rpool
 
 # Download stage3
-wget ftp://gentoo.osuosl.org/pub/gentoo/releases/amd64/current-stage3/stage3-amd64-*.tar.bz2
+wget ftp://gentoo.osuosl.org/pub/gentoo/releases/amd64/current-stage3/stage3-amd64-[0-9]*.tar.bz2
 
 # Extract stage3
 tar -xf stage3-amd64-*.tar.bz2 -C /mnt/gentoo
@@ -52,8 +54,8 @@ mount --rbind /sys /mnt/gentoo/sys
 chroot /mnt/gentoo /bin/bash
 env-update; source /etc/profile; export PS1="(chroot) $PS1"; cd
 
-# Get portage snapshot
-emerge --sync
+# Get portage snapshot (use OSUOSL mirror because it is usually fast)
+env GENTOO_MIRRORS="http://gentoo.osuosl.org" emerge-webrsync
 
 # Install genkernel
 emerge sys-kernel/genkernel
@@ -77,20 +79,11 @@ rc-update add zfs boot
 # Install gptfdisk
 emerge sys-apps/gptfdisk
 
-#
-# Use gdisk to make partition 2 a BIOS boot partition (type EF02) from sectors 48 to 2047
-#
+# Make BIOS Boot Partition (make certain /dev/sda is your actual block device!)
+sgdisk --new=2:48:2047 --typecode=2:EF02 --change-name=2:"BIOS boot partition" /dev/sda
 
-# Flush the pool to ensure that GRUB2 is happy
-exit
-umount -l /mnt/gentoo/proc /mnt/gentoo/dev /mnt/gentoo/sys
-zpool export rpool
-zpool import -f -o cachefile=/tmp/zpool.cache -R /mnt/gentoo rpool
-mount -t proc none /mnt/gentoo/proc
-mount --rbind /dev /mnt/gentoo/dev
-mount --rbind /sys /mnt/gentoo/sys
-chroot /mnt/gentoo /bin/bash
-env-update; source /etc/profile; export PS1="(chroot) $PS1"; cd
+# Flush the page cache to ensure GRUB2 sees the latest disk content
+echo 1 > /proc/sys/vm/drop_caches
 
 # Install GRUB2
 echo "sys-boot/grub:2 libzfs" >> /etc/portage/package.use
@@ -103,9 +96,8 @@ grub2-install /dev/sda
 # Build kernel and initramfs
 genkernel all --no-clean --no-mountboot --zfs --bootloader=grub2 --callback="emerge @module-rebuild"
 
-#
 # Comment the BOOT, ROOT and SWAP lines in /etc/fstab
-#
+sed -i -e "s/\(.*\)\/\(BOOT\|ROOT\|SWAP\)\(.*\)/\#\1\/\2\3/g" /etc/fstab
 
 #
 # Follow chapters 8 through 12 of Gentoo Handboook: http://www.gentoo.org/doc/en/handbook/

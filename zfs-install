@@ -16,7 +16,7 @@ zfs create -o mountpoint=/home rpool/HOME
 zfs create -o mountpoint=/root rpool/HOME/root
 
 # Create portage directories
-zfs create -o mountpoint=none rpool/GENTOO
+zfs create -o mountpoint=none -o setuid=off rpool/GENTOO
 zfs create -o mountpoint=/usr/portage -o atime=off rpool/GENTOO/portage
 zfs create -o mountpoint=/usr/portage/distfiles rpool/GENTOO/distfiles
 

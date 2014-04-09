@@ -90,8 +90,9 @@ echo "sys-boot/grub:2 libzfs" >> /etc/portage/package.use
 echo "sys-boot/grub:2 ~amd64" >> /etc/portage/package.accept_keywords
 emerge sys-boot/grub:2
 touch /etc/mtab
-grub2-mkconfig -o /boot/grub2/grub.cfg
 grub2-install /dev/sda
+ln -s grub /boot/grub2
+grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # Build kernel and initramfs
 genkernel all --no-clean --no-mountboot --zfs --bootloader=grub2 --callback="emerge @module-rebuild"

@@ -1,0 +1,29 @@
+From 562ada612058133a5483c68a73605f3c5f42fffe Mon Sep 17 00:00:00 2001
+From: Eric Van Hensbergen <ericvh@gmail.com>
+Date: Fri, 15 Jan 2010 18:54:03 -0600
+Subject: [PATCH] net/9p: fix virtio transport to correctly update status on
+ connect
+
+The 9p virtio transport was not updating its connection status correctly
+preventing it from being able to mount the server.
+
+Signed-off-by: Eric Van Hensbergen <ericvh@gmail.com>
+---
+ net/9p/trans_virtio.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
+index ea1e3da..67c4bc7 100644
+--- a/net/9p/trans_virtio.c
++++ b/net/9p/trans_virtio.c
+@@ -311,6 +311,7 @@ p9_virtio_create(struct p9_client *client, const char *devname, char *args)
+ 	}
+ 
+ 	client->trans = (void *)chan;
++	client->status = Connected;
+ 	chan->client = client;
+ 
+ 	return 0;
+-- 
+1.9.3
+

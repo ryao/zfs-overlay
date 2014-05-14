@@ -13,7 +13,7 @@ HOMEPAGE="http://www.redhat.com/"
 SRC_URI="ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/kernel-${RV}.src.rpm"
 SRC_URI="${SRC_URI} ftp://ftp.muug.mb.ca/mirror/centos/6.5/updates/x86_64/Packages/kernel-${RV}.x86_64.rpm"
 
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 IUSE="binary +config"
 RESTRICT="strip test"
 LICENSE="GPL-2"

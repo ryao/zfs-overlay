@@ -5,7 +5,11 @@
 #
 
 # Create pool
-zpool create -f -o ashift=12 -o cachefile=/tmp/zpool.cache -O normalization=formD -m none -R /mnt/gentoo rpool /dev/sda
+zpool create -f -o ashift=12 -o cachefile=/tmp/zpool.cache -O normalization=formD -m none -R /mnt/gentoo -d -o feature@async_destroy=enabled -o feature@empty_bpobj=enabled -o feature@lz4_compress=enabled -o feature@spacemap_histogram=enabled -o feature@enabled_txg=enabled -o feature@extensible_dataset=enabled -o feature@bookmarks=enabled rpool /dev/sda
+
+# Workaround 0.6.4 regression
+zfs umount "/mnt/gentoo/rpool"
+rmdir "/mnt/gentoo/rpool"
 
 # Create rootfs
 zfs create -o mountpoint=none rpool/ROOT

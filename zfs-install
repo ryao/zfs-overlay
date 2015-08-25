@@ -2,7 +2,8 @@
 # Boot Linux Live CD with ZFS support
 # fearedbliss maintains a variant of System Rescue CD that is highly recommended:
 # http://ftp.osuosl.org/pub/funtoo/distfiles/sysresccd/
-#
+# Instruction for a USB key version
+# http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick
 
 # Create pool
 zpool create -f -o ashift=12 -o cachefile=/tmp/zpool.cache -O normalization=formD -m none -R /mnt/gentoo -d -o feature@async_destroy=enabled -o feature@empty_bpobj=enabled -o feature@lz4_compress=enabled -o feature@spacemap_histogram=enabled -o feature@enabled_txg=enabled -o feature@extensible_dataset=enabled -o feature@bookmarks=enabled rpool /dev/sda

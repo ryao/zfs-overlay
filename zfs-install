@@ -98,6 +98,24 @@ echo "sys-boot/grub:2 libzfs" >> /etc/portage/package.use/zfs
 echo "sys-boot/grub:2 ~amd64" >> /etc/portage/package.accept_keywords
 emerge sys-boot/grub:2
 touch /etc/mtab
+
+# sys-fs/zfs-kmod and sys-fs/zfs switched to a proposed stable /dev/zfs API in
+# 0.6.5.3. This breaks GRUB2 if the userland expects the new ABI and the kernel
+# modules in the live environment do not support it.
+#
+# Provided you have the latest ebuilds (0.6.5.3-r1), your userland should be
+# using the stable ABI. You can see if the new stable ABI is supported in your
+# live environment by running grub2-probe:
+grub2-probe /
+
+# Idealy, grub2-probe would print "zfs" (without the quotes). If grub2-probe
+# reported an error, it is likely that your kernel modules from your live
+# environment do not support the new ABI. The kernel modules from 0.6.5.3-r1
+# support both, so install the older userland tools as a workaround. This will
+# avoid a failure in grub2-install and/or genkernel's invocation of grub2-mkconfig.
+emerge -1v --nodeps =sys-fs/zfs-0.6.5.3
+
+# Install GRUB2 to disk (make certain /dev/sda is your actual block device!)
 grub2-install /dev/sda
 
 # We must create an empty configuration file so genkernel fines the right one.
@@ -105,6 +123,11 @@ touch /boot/grub/grub.cfg
 
 # Build kernel and initramfs
 genkernel all --no-clean --no-mountboot --zfs --bootloader=grub2 --callback="emerge @module-rebuild"
+
+# If you needed to install the old tools, you should run the following to
+# install the new tools again and update the initramfs archive.
+emerge -1v --nodeps sys-fs/zfs
+genkernel initramfs --no-clean --no-mountboot --zfs
 
 # Comment the BOOT, ROOT and SWAP lines in /etc/fstab
 sed -i -e "s/\(.*\)\/\(BOOT\|ROOT\|SWAP\)\(.*\)/\#\1\/\2\3/g" /etc/fstab

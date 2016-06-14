@@ -1,7 +1,7 @@
 #
 # Boot Linux Live CD with ZFS support
 # fearedbliss maintains a variant of System Rescue CD that is highly recommended:
-# http://ftp.osuosl.org/pub/funtoo/distfiles/sysresccd/
+# https://wiki.gentoo.org/wiki/User:Fearedbliss
 # Instruction for a USB key version
 # http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick
 

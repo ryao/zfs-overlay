@@ -8,10 +8,6 @@
 # Create pool
 zpool create -f -o ashift=12 -o cachefile=/tmp/zpool.cache -O normalization=formD -m none -R /mnt/gentoo -d -o feature@async_destroy=enabled -o feature@empty_bpobj=enabled -o feature@lz4_compress=enabled -o feature@spacemap_histogram=enabled -o feature@enabled_txg=enabled -o feature@extensible_dataset=enabled -o feature@bookmarks=enabled rpool /dev/sda
 
-# Workaround 0.6.4 regression
-zfs umount "/mnt/gentoo/rpool"
-rmdir "/mnt/gentoo/rpool"
-
 # Create rootfs
 zfs create -o mountpoint=none rpool/ROOT
 zfs create -o mountpoint=/ rpool/ROOT/gentoo
@@ -33,9 +29,6 @@ zfs create -o mountpoint=/usr/portage/packages rpool/GENTOO/packages
 
 # Create optional ccache directory
 zfs create -o mountpoint=/var/tmp/ccache -o compression=lz4 rpool/GENTOO/ccache
-
-# Set bootfs
-zpool set bootfs=rpool/ROOT/gentoo rpool
 
 # Download stage3
 wget 'ftp://gentoo.osuosl.org/pub/gentoo/releases/amd64/autobuilds/current-stage3-amd64/stage3-amd64-[0-9]*.tar.bz2'
@@ -94,40 +87,22 @@ sgdisk --new=2:48:2047 --typecode=2:EF02 --change-name=2:"BIOS boot partition" /
 echo 1 > /proc/sys/vm/drop_caches
 
 # Install GRUB2
+mkdir -p /etc/portage/profile/package.use.mask
+mkdir -p /etc/portage/package.use
+echo "sys-boot/grub:2 -libzfs" >> /etc/portage/profile/package.use.mask/zfs
 echo "sys-boot/grub:2 libzfs" >> /etc/portage/package.use/zfs
 echo "sys-boot/grub:2 ~amd64" >> /etc/portage/package.accept_keywords
 emerge sys-boot/grub:2
 touch /etc/mtab
 
-# sys-fs/zfs-kmod and sys-fs/zfs switched to a proposed stable /dev/zfs API in
-# 0.6.5.3. This breaks GRUB2 if the userland expects the new ABI and the kernel
-# modules in the live environment do not support it.
-#
-# Provided you have the latest ebuilds (0.6.5.3-r1), your userland should be
-# using the stable ABI. You can see if the new stable ABI is supported in your
-# live environment by running grub2-probe:
-grub2-probe /
-
-# Idealy, grub2-probe would print "zfs" (without the quotes). If grub2-probe
-# reported an error, it is likely that your kernel modules from your live
-# environment do not support the new ABI. The kernel modules from 0.6.5.3-r1
-# support both, so install the older userland tools as a workaround. This will
-# avoid a failure in grub2-install and/or genkernel's invocation of grub2-mkconfig.
-emerge -1v --nodeps =sys-fs/zfs-0.6.5.3
-
 # Install GRUB2 to disk (make certain /dev/sda is your actual block device!)
-grub2-install /dev/sda
+grub-install /dev/sda
 
 # We must create an empty configuration file so genkernel fines the right one.
 touch /boot/grub/grub.cfg
 
 # Build kernel and initramfs
 genkernel all --no-clean --no-mountboot --zfs --bootloader=grub2 --callback="emerge @module-rebuild"
-
-# If you needed to install the old tools, you should run the following to
-# install the new tools again and update the initramfs archive.
-emerge -1v --nodeps sys-fs/zfs
-genkernel initramfs --no-clean --no-mountboot --zfs
 
 # Comment the BOOT, ROOT and SWAP lines in /etc/fstab
 sed -i -e "s/\(.*\)\/\(BOOT\|ROOT\|SWAP\)\(.*\)/\#\1\/\2\3/g" /etc/fstab
